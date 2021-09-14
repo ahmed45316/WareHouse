@@ -60,7 +60,7 @@ namespace WareHouse.Service.Services.Customer
         }
         private static Expression<Func<Entity.Domain.Customer, bool>> PredicateBuilderFunction(CustomerPredicate customerPredicate)
         {
-            var predicate = PredicateBuilder.New<Entity.Domain.Customer>(true);
+            var predicate = PredicateBuilder.New<Entity.Domain.Customer>(false);
             if (customerPredicate.Id != null)
             {
                 predicate = predicate.And(x => x.Id == customerPredicate.Id);

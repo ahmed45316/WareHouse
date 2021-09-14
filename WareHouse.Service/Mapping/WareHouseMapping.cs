@@ -8,8 +8,8 @@ namespace WareHouse.Service.Mapping
     {
         public WareHouseMapping()
         {
-            MapCustomerProfile();
             MapCategoryProfile();
+            MapCustomerProfile();
             MapItemProfile();
             MapInvoiceProfile();
         }

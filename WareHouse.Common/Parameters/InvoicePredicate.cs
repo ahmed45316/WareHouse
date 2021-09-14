@@ -3,7 +3,7 @@
     public class InvoicePredicate
     {
         public long? Id { get; set; }
-        public string Name { get; set; }
-       
+        public long CustomerId { get; set; }
+
     }
 }
