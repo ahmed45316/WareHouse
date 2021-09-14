@@ -9,6 +9,9 @@ namespace WareHouse.Service.Mapping
         public WareHouseMapping()
         {
             MapCustomerProfile();
+            MapCategoryProfile();
+            MapItemProfile();
+            MapInvoiceProfile();
         }
         private void MapCustomerProfile()
         {
@@ -16,6 +19,27 @@ namespace WareHouse.Service.Mapping
             //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
             CreateMap<AddCustomerDto, Customer>().ReverseMap();
             CreateMap<EditCustomerDto, Customer>().ReverseMap();
+        }
+        private void MapCategoryProfile()
+        {
+            CreateMap<GetCategoryDto, Category>().ReverseMap();
+            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<AddCategoryDto, Category>().ReverseMap();
+            CreateMap<EditCategoryDto, Category>().ReverseMap();
+        }
+        private void MapItemProfile()
+        {
+            CreateMap<GetItemDto, Item>().ReverseMap();
+            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<AddItemDto, Item>().ReverseMap();
+            CreateMap<EditItemDto, Item>().ReverseMap();
+        }
+        private void MapInvoiceProfile()
+        {
+            CreateMap<GetInvoiceDto, Invoice>().ReverseMap();
+            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<AddInvoiceDto, Invoice>().ReverseMap();
+            CreateMap<EditInvoiceDto, Invoice>().ReverseMap();
         }
     }
 }

@@ -7,5 +7,5 @@ namespace WareHouse.DataAccess.DataInitializer
     {
         IEnumerable<Category> SeedCategories(); 
         IEnumerable<Customer> SeedCustomers();
-}
+    }
 }

@@ -55,8 +55,8 @@ namespace WareHouse.Service.Services.Customer
 
         public async Task<IEnumerable<GetCustomerDto>> FindAsync(CustomerPredicate predicate)
         {
-            var customers = await UniteOfWork.GetRepository<Entity.Domain.Customer>().FindAsync(PredicateBuilderFunction(predicate));
-            return Mapper.Map<IEnumerable<GetCustomerDto>>(customers);
+            var Customers = await UniteOfWork.GetRepository<Entity.Domain.Customer>().FindAsync(PredicateBuilderFunction(predicate));
+            return Mapper.Map<IEnumerable<GetCustomerDto>>(Customers);
         }
         private static Expression<Func<Entity.Domain.Customer, bool>> PredicateBuilderFunction(CustomerPredicate customerPredicate)
         {
