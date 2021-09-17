@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using WareHouse.Common.Abstraction.UnitOfWork;
 using WareHouse.Common.Dto;
 using WareHouse.Common.Parameters;
@@ -43,8 +44,17 @@ namespace WareHouse.Service.Services.Item
 
         public async Task<GetItemDto> GetByIdAsync(long id)
         {
-            var Item = await UniteOfWork.GetRepository<Entity.Domain.Item>().GetAsync(id);
-            return Mapper.Map<GetItemDto>(Item);
+            // var item = await UniteOfWork.GetRepository<Entity.Domain.Item>().FirstOrDefaultAsync(q => q.Id == id, include: src => src.Include(q => q.Category));
+            // return Mapper.Map<GetItemDto>(item);
+            var item = await UniteOfWork.GetRepository<Entity.Domain.Item>().FirstOrDefaultSelectAsync(q =>
+                new GetItemDto
+                {
+                    CategoryId = q.CategoryId,
+                    CategoryName = q.Category.CategoryName,
+                    Id = q.Id,
+                    ItemName = q.ItemName
+                }, q => q.Id == id);
+            return item;
         }
 
         public async Task<IEnumerable<GetItemDto>> GetAllAsync()

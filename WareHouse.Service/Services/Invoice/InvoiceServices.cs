@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using LinqKit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using WareHouse.Common.Abstraction.UnitOfWork;
 using WareHouse.Common.Dto;
+using WareHouse.Common.Enum;
+using WareHouse.Common.Helper.Cl;
 using WareHouse.Common.Parameters;
 using WareHouse.Service.Services.Base;
 
@@ -20,19 +25,25 @@ namespace WareHouse.Service.Services.Invoice
 
         public async Task<long> AddAsync(AddInvoiceDto model)
         {
-            var Invoice = Mapper.Map<Entity.Domain.Invoice>(model);
-            var res = UniteOfWork.GetRepository<Entity.Domain.Invoice>().Add(Invoice);
+            if (model.InvoicType == InvoicType.InvoiceSell || model.InvoicType == InvoicType.InvoiceBuyBack)
+            {
+                var list = (await CheckItemStock(model.InvoiceDetails.Select(q => q.ItemId))).ToList();
+                var availableInvoiceDetails = model.InvoiceDetails.Where(q => q.Quantity <= list.FirstOrDefault(u => u.ItemId == q.ItemId)?.Quantity);
+                if (!model.IsContinue && availableInvoiceDetails.Count() != model.InvoiceDetails.Count) return 0;
+            }
+            var invoice = Mapper.Map<Entity.Domain.Invoice>(model);
+            var res = UniteOfWork.GetRepository<Entity.Domain.Invoice>().Add(invoice);
             await UniteOfWork.SaveChanges();
             return res.Id;
         }
 
-        public async Task EditAsync(EditInvoiceDto model)
-        {
-            var oldInvoice = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().GetAsync(model.Id);
-            var newInvoice = Mapper.Map(model, oldInvoice);
-            UniteOfWork.GetRepository<Entity.Domain.Invoice>().Update(newInvoice);
-            await UniteOfWork.SaveChanges();
-        }
+        //public async Task EditAsync(EditInvoiceDto model)
+        //{
+        //    var oldInvoice = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().GetAsync(model.Id);
+        //    var newInvoice = Mapper.Map(model, oldInvoice);
+        //    UniteOfWork.GetRepository<Entity.Domain.Invoice>().Update(newInvoice);
+        //    await UniteOfWork.SaveChanges();
+        //}
 
         public async Task DeleteAsync(long id)
         {
@@ -43,8 +54,23 @@ namespace WareHouse.Service.Services.Invoice
 
         public async Task<GetInvoiceDto> GetByIdAsync(long id)
         {
-            var Invoice = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().GetAsync(id);
-            return Mapper.Map<GetInvoiceDto>(Invoice);
+            var invoice = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().FirstOrDefaultAsync(q => q.Id == id, include: src => src.Include(q => q.InvoiceDetails));
+            return Mapper.Map<GetInvoiceDto>(invoice);
+        }
+        public async Task<GetInvoiceDto> GetByInvoicNumberAsync(string invoicNumber, InvoicType invoicType)
+        {
+            var invoice = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().FirstOrDefaultSelectAsync(q =>
+                new GetInvoiceDto
+                {
+                    Id = q.Id,
+                    InvoiceDetails = Mapper.Map<List<GetInvoiceDetailDto>>(q.InvoiceDetails),
+                    InvoicTypeName = q.InvoicType.ToString(),
+                    CustomerName = q.Customer.CustomerName,
+                    InvoiceDateTime = q.InvoiceDateTime,
+                    InvoiceTotal = q.InvoiceDetails.Sum(r=>r.TotalPrice)
+
+                }, q => q.InvoiceNumber == invoicNumber && q.InvoicType == invoicType);
+            return invoice;
         }
 
         public async Task<IEnumerable<GetInvoiceDto>> GetAllAsync()
@@ -71,6 +97,24 @@ namespace WareHouse.Service.Services.Invoice
             //}
 
             return predicate;
+        }
+
+        private async Task<IEnumerable<CheckItemStock>> CheckItemStock(IEnumerable<long> itemIdsList)
+        {
+            var items = (await UniteOfWork.GetRepository<Entity.Domain.InvoiceDetail>().FindSelectAsync(q => new
+            {
+                q.ItemId,
+                q.Quantity,
+                q.Invoice.InvoicType
+            }, q => itemIdsList.Contains(q.ItemId))).ToList();
+
+            var list = items.GroupBy(t => t.ItemId, (key, value) => new CheckItemStock
+            {
+                ItemId = key,
+                Quantity =
+                    value.Where(q => q.InvoicType == InvoicType.InvoiceBuy || q.InvoicType == InvoicType.InvoiceSellBack).Sum(t => t.Quantity) - value.Where(q => q.InvoicType == InvoicType.InvoiceSell || q.InvoicType == InvoicType.InvoiceBuyBack).Sum(t => t.Quantity)
+            }).ToList();
+            return list;
         }
     }
 }

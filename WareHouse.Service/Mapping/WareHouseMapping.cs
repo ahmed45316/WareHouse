@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using WareHouse.Common.Dto;
 using WareHouse.Entity.Domain;
 
@@ -12,6 +13,7 @@ namespace WareHouse.Service.Mapping
             MapCustomerProfile();
             MapItemProfile();
             MapInvoiceProfile();
+            MapInvoiceDetailProfile();
         }
         private void MapCustomerProfile()
         {
@@ -29,17 +31,25 @@ namespace WareHouse.Service.Mapping
         }
         private void MapItemProfile()
         {
-            CreateMap<GetItemDto, Item>().ReverseMap();
-            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<GetItemDto, Item>().ReverseMap()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category == null ? null : src.Category.CategoryName));
             CreateMap<AddItemDto, Item>().ReverseMap();
             CreateMap<EditItemDto, Item>().ReverseMap();
         }
         private void MapInvoiceProfile()
         {
-            CreateMap<GetInvoiceDto, Invoice>().ReverseMap();
-            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<GetInvoiceDto, Invoice>().ReverseMap()
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer == null ? null : src.Customer.CustomerName))
+            .ForMember(dest => dest.InvoiceTotal, opt => opt.MapFrom(src => src.InvoiceDetails == null ? 0 : src.InvoiceDetails.Sum(r=>r.TotalPrice)));
             CreateMap<AddInvoiceDto, Invoice>().ReverseMap();
             CreateMap<EditInvoiceDto, Invoice>().ReverseMap();
+        }
+        private void MapInvoiceDetailProfile()
+        {
+            CreateMap<GetInvoiceDetailDto, InvoiceDetail>().ReverseMap()
+            .ForMember(dest => dest.ItemName, opt => opt.MapFrom(src => src.Item == null ? null : src.Item.ItemName));
+            CreateMap<AddInvoiceDetailDto, InvoiceDetail>().ReverseMap();
+            CreateMap<EditInvoiceDetailDto, InvoiceDetail>().ReverseMap();
         }
     }
 }

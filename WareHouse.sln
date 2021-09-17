@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.API", "WareHouse.API\WareHouse.API.csproj", "{C073F9BF-CD06-44D3-A4DE-C0A88091B561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouse.API", "WareHouse.API\WareHouse.API.csproj", "{C073F9BF-CD06-44D3-A4DE-C0A88091B561}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.Common", "WareHouse.Common\WareHouse.Common.csproj", "{C31A301A-C86D-45FA-895D-262606AB6F3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouse.Common", "WareHouse.Common\WareHouse.Common.csproj", "{C31A301A-C86D-45FA-895D-262606AB6F3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.Entity", "WareHouse.Entity\WareHouse.Entity.csproj", "{979A8D2F-A857-43D6-B313-BED53B4FAD9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouse.Entity", "WareHouse.Entity\WareHouse.Entity.csproj", "{979A8D2F-A857-43D6-B313-BED53B4FAD9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.DataAccess", "WareHouse.DataAccess\WareHouse.DataAccess.csproj", "{63B12B00-A3AB-4A9F-AA80-BB09B1BEF8DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouse.DataAccess", "WareHouse.DataAccess\WareHouse.DataAccess.csproj", "{63B12B00-A3AB-4A9F-AA80-BB09B1BEF8DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.Service", "WareHouse.Service\WareHouse.Service.csproj", "{961798F9-90DA-4135-89EF-ACB806336F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouse.Service", "WareHouse.Service\WareHouse.Service.csproj", "{961798F9-90DA-4135-89EF-ACB806336F6D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{E67FC835-2B36-488D-9159-035D9E87036B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{7C93E9DC-A107-41F6-94D1-135D648F8F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse.Mvc", "WareHouse.Mvc\WareHouse.Mvc.csproj", "{C0D8B93B-632C-424D-8E57-C13BAECA174B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +45,20 @@ Global
 		{961798F9-90DA-4135-89EF-ACB806336F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{961798F9-90DA-4135-89EF-ACB806336F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{961798F9-90DA-4135-89EF-ACB806336F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0D8B93B-632C-424D-8E57-C13BAECA174B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0D8B93B-632C-424D-8E57-C13BAECA174B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0D8B93B-632C-424D-8E57-C13BAECA174B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0D8B93B-632C-424D-8E57-C13BAECA174B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C073F9BF-CD06-44D3-A4DE-C0A88091B561} = {E67FC835-2B36-488D-9159-035D9E87036B}
+		{979A8D2F-A857-43D6-B313-BED53B4FAD9B} = {E67FC835-2B36-488D-9159-035D9E87036B}
+		{63B12B00-A3AB-4A9F-AA80-BB09B1BEF8DC} = {E67FC835-2B36-488D-9159-035D9E87036B}
+		{961798F9-90DA-4135-89EF-ACB806336F6D} = {E67FC835-2B36-488D-9159-035D9E87036B}
+		{C0D8B93B-632C-424D-8E57-C13BAECA174B} = {7C93E9DC-A107-41F6-94D1-135D648F8F39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05AA42A4-4BDE-4221-B8FD-476D4520C744}
