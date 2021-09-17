@@ -8,10 +8,13 @@ namespace WareHouse.Common.Dto
     {
         public long Id { get; set; }
         public InvoicType InvoicType { get; set; }
+        public string InvoicTypeName { get; set; }
         public DateTime InvoiceDateTime { get; set; }
         public long CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public string InvoiceNumber { get; set; }
         public List<GetInvoiceDetailDto> InvoiceDetails { get; set; }
+        public decimal InvoiceTotal { get; set; } 
     }
     public class EditInvoiceDto
     {
@@ -28,5 +31,6 @@ namespace WareHouse.Common.Dto
         public long CustomerId { get; set; }
         public string InvoiceNumber { get; set; }
         public List<AddInvoiceDetailDto> InvoiceDetails { get; set; }
+        public bool IsContinue { get; set; }
     }
 }

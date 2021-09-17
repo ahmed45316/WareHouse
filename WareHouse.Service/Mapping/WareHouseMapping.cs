@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using WareHouse.Common.Dto;
 using WareHouse.Entity.Domain;
 
@@ -37,8 +38,9 @@ namespace WareHouse.Service.Mapping
         }
         private void MapInvoiceProfile()
         {
-            CreateMap<GetInvoiceDto, Invoice>().ReverseMap();
-            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<GetInvoiceDto, Invoice>().ReverseMap()
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer == null ? null : src.Customer.CustomerName))
+            .ForMember(dest => dest.InvoiceTotal, opt => opt.MapFrom(src => src.InvoiceDetails == null ? 0 : src.InvoiceDetails.Sum(r=>r.TotalPrice)));
             CreateMap<AddInvoiceDto, Invoice>().ReverseMap();
             CreateMap<EditInvoiceDto, Invoice>().ReverseMap();
         }
