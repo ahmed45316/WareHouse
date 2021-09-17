@@ -10,7 +10,8 @@ namespace WareHouse.Common.Dto
         public long Id { get; set; }
         public string ItemName { get; set; }
         public long CategoryId { get; set; }
-
+        public virtual GetCategoryDto Category { get; set; }
+        public string CategoryName { get; set; }
     }
     public class EditItemDto
     {

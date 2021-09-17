@@ -29,8 +29,8 @@ namespace WareHouse.Service.Mapping
         }
         private void MapItemProfile()
         {
-            CreateMap<GetItemDto, Item>().ReverseMap();
-            //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
+            CreateMap<GetItemDto, Item>().ReverseMap()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category == null ? null : src.Category.CategoryName));
             CreateMap<AddItemDto, Item>().ReverseMap();
             CreateMap<EditItemDto, Item>().ReverseMap();
         }
