@@ -12,6 +12,7 @@ namespace WareHouse.Service.Mapping
             MapCustomerProfile();
             MapItemProfile();
             MapInvoiceProfile();
+            MapInvoiceDetailProfile();
         }
         private void MapCustomerProfile()
         {
@@ -40,6 +41,13 @@ namespace WareHouse.Service.Mapping
             //.ForMember(dest=>dest.CustomerName,opt=>opt.MapFrom(src=>src.CustomerName));
             CreateMap<AddInvoiceDto, Invoice>().ReverseMap();
             CreateMap<EditInvoiceDto, Invoice>().ReverseMap();
+        }
+        private void MapInvoiceDetailProfile()
+        {
+            CreateMap<GetInvoiceDetailDto, InvoiceDetail>().ReverseMap()
+            .ForMember(dest => dest.ItemName, opt => opt.MapFrom(src => src.Item == null ? null : src.Item.ItemName));
+            CreateMap<AddInvoiceDetailDto, InvoiceDetail>().ReverseMap();
+            CreateMap<EditInvoiceDetailDto, InvoiceDetail>().ReverseMap();
         }
     }
 }

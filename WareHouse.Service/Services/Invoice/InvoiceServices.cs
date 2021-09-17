@@ -20,8 +20,8 @@ namespace WareHouse.Service.Services.Invoice
 
         public async Task<long> AddAsync(AddInvoiceDto model)
         {
-            var Invoice = Mapper.Map<Entity.Domain.Invoice>(model);
-            var res = UniteOfWork.GetRepository<Entity.Domain.Invoice>().Add(Invoice);
+            var invoice = Mapper.Map<Entity.Domain.Invoice>(model);
+            var res = UniteOfWork.GetRepository<Entity.Domain.Invoice>().Add(invoice);
             await UniteOfWork.SaveChanges();
             return res.Id;
         }
