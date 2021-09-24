@@ -57,10 +57,23 @@ namespace WareHouse.Service.Services.Item
             return item;
         }
 
+        //public async Task<IEnumerable<GetItemDto>> GetAllAsync()
+        //{
+        //    var Items = await UniteOfWork.GetRepository<Entity.Domain.Item>().GetAllAsync();
+        //    return Mapper.Map<IEnumerable<GetItemDto>>(Items);
+        //}
+
         public async Task<IEnumerable<GetItemDto>> GetAllAsync()
         {
-            var Items = await UniteOfWork.GetRepository<Entity.Domain.Item>().GetAllAsync();
-            return Mapper.Map<IEnumerable<GetItemDto>>(Items);
+            var item = await UniteOfWork.GetRepository<Entity.Domain.Item>().FindSelectAsync(q =>
+                new GetItemDto
+                {
+                    CategoryId = q.CategoryId,
+                    CategoryName = q.Category.CategoryName,
+                    Id = q.Id,
+                    ItemName = q.ItemName
+                });
+            return item;
         }
 
         public async Task<IEnumerable<GetItemDto>> FindAsync(ItemPredicate predicate)
