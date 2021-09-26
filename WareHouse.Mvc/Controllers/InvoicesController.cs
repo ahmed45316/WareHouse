@@ -9,31 +9,30 @@ using WareHouse.Mvc.RestSharp;
 
 namespace WareHouse.Mvc.Controllers
 {
-    public class ItemsController : Controller
+    public class InvoicesController : Controller
     {
         private readonly IRestsharpContainer _restsharpContainer;
-        public ItemsController(IRestsharpContainer restsharpContainer)
+        public InvoicesController(IRestsharpContainer restsharpContainer)
         {
             _restsharpContainer = restsharpContainer;
         }
         public async Task<IActionResult> Index()
         {
-            var items = await _restsharpContainer.SendRequest<IEnumerable<ItemVm>>("Item/GetAll", Method.GET);
-            return View(items);
+            var invoices = await _restsharpContainer.SendRequest<IEnumerable<InvoiceVm>>("Invoice/GetAll", Method.GET);
+            return View(invoices);
         }
         public IActionResult Create()
         {
-            
             return View();
         }
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ItemVm obj)
+        public async Task<IActionResult> Create(InvoiceVm obj)
         {
             if (ModelState.IsValid)
             {
-                await _restsharpContainer.SendRequest<long>("Item/Add", Method.POST, obj);
+                await _restsharpContainer.SendRequest<long>("Invoice/Add", Method.POST, obj);
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -41,19 +40,19 @@ namespace WareHouse.Mvc.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            var item = await GetItem(id);
-            if (item == null) return NotFound();
-            return View(item);
+            var invoice = await GetInvoice(id);
+            if (invoice == null) return NotFound();
+            return View(invoice);
         }
 
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ItemVm obj)
+        public async Task<IActionResult> Edit(InvoiceVm obj)
         {
             if (ModelState.IsValid)
             {
-                await _restsharpContainer.SendRequest("Item/Edit", Method.PUT, obj);
+                await _restsharpContainer.SendRequest("Invoice/Edit", Method.PUT, obj);
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -62,9 +61,9 @@ namespace WareHouse.Mvc.Controllers
         //GET - DELETE
         public async Task<IActionResult> Delete(int? id)
         {
-            var item = await GetItem(id);
-            if (item == null) return NotFound();
-            return View(item);
+            var invoice = await GetInvoice(id);
+            if (invoice == null) return NotFound();
+            return View(invoice);
         }
 
         //POST - DELETE
@@ -72,14 +71,14 @@ namespace WareHouse.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            await _restsharpContainer.SendRequest($"Item/Delete/{id}", Method.DELETE);
+            await _restsharpContainer.SendRequest($"Invoice/Delete/{id}", Method.DELETE);
             return RedirectToAction("Index");
         }
 
-        private async Task<ItemVm> GetItem(int? id)
+        private async Task<InvoiceVm> GetInvoice(int? id)
         {
             if (id == null || id == 0) return null;
-            return await _restsharpContainer.SendRequest<ItemVm>($"Item/Get/{id}", Method.GET);
+            return await _restsharpContainer.SendRequest<InvoiceVm>($"Invoice/Get/{id}", Method.GET);
         }
     }
 }

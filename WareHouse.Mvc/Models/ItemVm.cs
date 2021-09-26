@@ -13,5 +13,7 @@ namespace WareHouse.Mvc.Models
         [Required(ErrorMessage = "*")]
         public long CategoryId { get; set; }
        public string CategoryName { get; set; }
+        public virtual AddCategoryDto Category { get; set; }
+
     }
 }

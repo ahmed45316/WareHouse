@@ -75,8 +75,20 @@ namespace WareHouse.Service.Services.Invoice
 
         public async Task<IEnumerable<GetInvoiceDto>> GetAllAsync()
         {
-            var Invoices = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().GetAllAsync();
-            return Mapper.Map<IEnumerable<GetInvoiceDto>>(Invoices);
+            //var Invoices = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().GetAllAsync();
+            //return Mapper.Map<IEnumerable<GetInvoiceDto>>(Invoices);
+            var invoices = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().FindSelectAsync(q =>
+               new GetInvoiceDto
+               {
+                   Id = q.Id,
+                   InvoiceDetails = Mapper.Map<List<GetInvoiceDetailDto>>(q.InvoiceDetails),
+                   InvoicTypeName = q.InvoicType.ToString(),
+                   CustomerName = q.Customer.CustomerName,
+                   InvoiceDateTime = q.InvoiceDateTime,
+                   InvoiceTotal = q.InvoiceDetails.Sum(r => r.TotalPrice)
+
+               } );
+            return invoices;
         }
 
         public async Task<IEnumerable<GetInvoiceDto>> FindAsync(InvoicePredicate predicate)

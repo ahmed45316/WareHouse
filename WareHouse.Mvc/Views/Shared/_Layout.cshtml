@@ -62,7 +62,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Basic Information</span>
+                    <span>Store Info</span>
                 </a>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -82,6 +82,22 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Customers Info:</h6>
                         <a class="collapse-item" asp-controller="Customers" asp-action="Index">Customers</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse2"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Invoices</span>
+                </a>
+                <div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Invoices:</h6>
+                        <a class="collapse-item" asp-controller="Invoices" asp-action="Index">Invoice Sell</a>
+                        <a class="collapse-item" asp-controller="Invoices" asp-action="Index">Invoice BackSell</a>
+                        <a class="collapse-item" asp-controller="Invoices" asp-action="Index">Invoice Buy</a>
+                        <a class="collapse-item" asp-controller="Invoices" asp-action="Index">Invoice BackBuy</a>
                     </div>
                 </div>
             </li>
