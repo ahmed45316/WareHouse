@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace WareHouse.Mvc.Controllers
             var items = await _restsharpContainer.SendRequest<IEnumerable<ItemVm>>("Item/GetAll", Method.GET);
             return View(items);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            
+            await GetAllCategories();
             return View();
         }
         //POST - CREATE
@@ -41,6 +42,7 @@ namespace WareHouse.Mvc.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
+            await GetAllCategories();
             var item = await GetItem(id);
             if (item == null) return NotFound();
             return View(item);
@@ -80,6 +82,11 @@ namespace WareHouse.Mvc.Controllers
         {
             if (id == null || id == 0) return null;
             return await _restsharpContainer.SendRequest<ItemVm>($"Item/Get/{id}", Method.GET);
+        }
+        private async Task GetAllCategories()
+        {
+            var list = await _restsharpContainer.SendRequest<List<CategoryVm>>("Category/GetAll", Method.GET);
+            ViewBag.ListOfCategories = new SelectList(list, "Id", "CategoryName");
         }
     }
 }
