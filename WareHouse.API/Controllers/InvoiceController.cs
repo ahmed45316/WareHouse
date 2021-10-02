@@ -40,6 +40,11 @@ namespace WareHouse.API.Controllers
         {
             return Ok(await _services.GetByIdAsync(id));
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetItemStockAsync(long id)
+        {
+            return Ok(await _services.CheckItemStock(id));
+        }
         [HttpGet]
         public async Task<IActionResult> GetAsync(string invoicNumber, InvoicType invoicType)
         {

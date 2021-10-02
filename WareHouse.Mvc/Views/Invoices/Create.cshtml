@@ -4,33 +4,26 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
 
-<form method="post" asp-action="Create">
+    tr.error {
+        background-color: rgba(255,0,0,0.35);
+    }
+</style>
+<form id="formData">
     <div class="border p-3">
         @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
         <div class="form-group row">
             <h2 class="text-info pl-3">Add Invoice</h2>
         </div>
         <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="InvoicType"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="InvoicType" class="form-control" />
-                        <span asp-validation-for="InvoicType" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="InvoiceDateTime"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="InvoiceDateTime" class="form-control" />
-                        <span asp-validation-for="InvoiceDateTime" class="text-danger"></span>
-                    </div>
-                </div>
+            <div class="col-12">
                 <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="CustomerId"></label>
@@ -41,27 +34,96 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="InvoicType"></label>
+                    </div>
                     <div class="col-4">
+                        <input asp-for="InvoicType" class="form-control" />
+                        <span asp-validation-for="InvoicType" class="text-danger"></span>
+                    </div>
+                    <div class="col-2">
+                        <label asp-for="InvoiceDateTime"></label>
+                    </div>
+                    <div class="col-4">
+                        <input asp-for="InvoiceDateTime" class="form-control" />
+                        <span asp-validation-for="InvoiceDateTime" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-2">
                         <label asp-for="InvoiceNumber"></label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-4">
                         <input asp-for="InvoiceNumber" class="form-control" />
                         <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
                     </div>
-                </div>                <div class="form-group row">
-                    <div class="col-4">
+                    <div class="col-2">
                         <label asp-for="InvoiceTotal"></label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-4">
                         <input asp-for="InvoiceTotal" class="form-control" />
                         <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <!--Details -->
+                <div class="details">
+                    <h2>
+                        Order items
+                    </h2>
+                    <table class="table table-responsive">
+                        <!--Header-->
+                        <tr>
+                            <td>Category</td>
+                            <td>Product</td>
+                            <td>Quantity</td>
+                            <td>Price</td>
+                            <td>Total Price</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <!--Body-->
+                        <tr class="mycontainer" id="mainrow">
+                            <td>
+                                <select id="productCategory" asp-items="@ViewBag.ListOfCategories" class="pc form-control" onchange="LoadProduct(this)">
+                                    <option>Select</option>
+                                </select>
+                                <span class="error">Select Category</span>
+                            </td>
+                            <td>
+                                <select id="product" class="product form-control">
+                                    <option>Select</option>
+                                </select>
+                                <span class="error">Select product</span>
+                            </td>
+                            <td>
+                                <input type="text" id="quantity" class="quantity form-control" onchange="CheckQuantity(this)" />
+                                <span class="error">Valid quantity required</span>
+                            </td>
+                            <td>
+                                <input type="text" id="price" class="price form-control" />
+                            </td>
+                            <td>
+                                <input type="text" id="totalprice" class="totalprice form-control" />
+                            </td>
+                            <td>
+                                <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+                            </td>
+                        </tr>
+                        <!--footer-->
+                    </table>
+                    <div id="orderItems">
+                        <table class="table table-responsive" id="orderdetailsItems"></table>
+                        <span id="orderItemError" style="color:red"></span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                            <input type="submit" id="form-submit" class="btn btn-info w-100" value="Create" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
@@ -77,10 +139,9 @@
 
 </form>
 
-@*@section Scripts{
-
-        @{
-            <partial name="_ValidationScriptsPartial" />
-        }
-
-    }*@
+@section Scripts{
+<script>
+    var index = '@Url.Action("Index", "Invoices")';
+</script>
+    <script src="~/js/Actions/CreateInvoiceScript.js"></script>
+}

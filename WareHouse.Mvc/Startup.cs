@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WareHouse.Mvc.Core;
 using WareHouse.Mvc.RestSharp;
 
 namespace WareHouse.Mvc
@@ -24,7 +25,8 @@ namespace WareHouse.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRestsharpContainer>(x => new RestsharpContainer(Configuration["baseUrl"]));
+            //services.AddSingleton<IAppSettingsService, AppSettingsService>(e => Configuration.GetSection("ApiSetting").Get<AppSettingsService>());
+            services.AddScoped<IRestsharpContainer>(x => new RestsharpContainer(Configuration["ApiSetting:baseUrl"]));
             services.AddControllersWithViews();
         }
 

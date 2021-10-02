@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using WareHouse.Common.Enum;
 
 namespace WareHouse.Mvc.Models
 {
     public class InvoiceVm
     {
         
-        public long Id { get; set; }
+        public long? Id { get; set; }
       
        // public InvoicType InvoicType { get; set; }
         public long InvoicType { get; set; }
@@ -22,5 +22,6 @@ namespace WareHouse.Mvc.Models
         [Required(ErrorMessage = "*")]
         public string InvoiceNumber { get; set; }
         public decimal InvoiceTotal { get; set; }
+        public List<InvoiceDetailVm> InvoiceDetails { get; set; }
     }
 }

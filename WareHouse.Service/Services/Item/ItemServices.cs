@@ -56,6 +56,16 @@ namespace WareHouse.Service.Services.Item
                 }, q => q.Id == id);
             return item;
         }
+        public async Task<IEnumerable<GetItemDto>> GetByCategoryIdAsync(long id)
+        {
+            var item = await UniteOfWork.GetRepository<Entity.Domain.Item>().FindSelectAsync(q =>
+                new GetItemDto
+                {
+                    Id = q.Id,
+                    ItemName = q.ItemName
+                }, q => q.CategoryId == id);
+            return item;
+        }
 
         //public async Task<IEnumerable<GetItemDto>> GetAllAsync()
         //{

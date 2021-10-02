@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using WareHouse.Common.Dto;
 using WareHouse.Common.Enum;
+using WareHouse.Common.Helper.Cl;
 using WareHouse.Common.Parameters;
 using WareHouse.Service.Services.Base;
 
@@ -16,6 +17,7 @@ namespace WareHouse.Service.Services.Invoice
         Task<GetInvoiceDto> GetByInvoicNumberAsync(string invoicNumber, InvoicType invoicType);
         Task<IEnumerable<GetInvoiceDto>> GetAllAsync();
         Task<IEnumerable<GetInvoiceDto>> FindAsync(InvoicePredicate predicate);
+        Task<CheckItemStock> CheckItemStock(long itemId);
 
     }
 }

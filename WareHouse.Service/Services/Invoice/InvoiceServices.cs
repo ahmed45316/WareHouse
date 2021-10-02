@@ -67,7 +67,7 @@ namespace WareHouse.Service.Services.Invoice
                     InvoicTypeName = q.InvoicType.ToString(),
                     CustomerName = q.Customer.CustomerName,
                     InvoiceDateTime = q.InvoiceDateTime,
-                    InvoiceTotal = q.InvoiceDetails.Sum(r=>r.TotalPrice)
+                    InvoiceTotal = q.InvoiceDetails.Sum(r => r.TotalPrice)
 
                 }, q => q.InvoiceNumber == invoicNumber && q.InvoicType == invoicType);
             return invoice;
@@ -85,9 +85,10 @@ namespace WareHouse.Service.Services.Invoice
                    InvoicTypeName = q.InvoicType.ToString(),
                    CustomerName = q.Customer.CustomerName,
                    InvoiceDateTime = q.InvoiceDateTime,
-                   InvoiceTotal = q.InvoiceDetails.Sum(r => r.TotalPrice)
+                   InvoiceTotal = q.InvoiceDetails.Sum(r => r.TotalPrice),
+                   InvoiceNumber = q.InvoiceNumber
 
-               } );
+               });
             return invoices;
         }
 
@@ -95,6 +96,23 @@ namespace WareHouse.Service.Services.Invoice
         {
             var Invoices = await UniteOfWork.GetRepository<Entity.Domain.Invoice>().FindAsync(PredicateBuilderFunction(predicate));
             return Mapper.Map<IEnumerable<GetInvoiceDto>>(Invoices);
+        }
+        public async Task<CheckItemStock> CheckItemStock(long itemId)
+        {
+            var items = (await UniteOfWork.GetRepository<Entity.Domain.InvoiceDetail>().FindSelectAsync(q => new
+            {
+                q.ItemId,
+                q.Quantity,
+                q.Invoice.InvoicType
+            }, q => q.ItemId == itemId)).ToList();
+
+            var itemStock = items.GroupBy(t => t.ItemId, (key, value) => new CheckItemStock
+            {
+                ItemId = key,
+                Quantity =
+                    value.Where(q => q.InvoicType == InvoicType.InvoiceBuy || q.InvoicType == InvoicType.InvoiceSellBack).Sum(t => t.Quantity) - value.Where(q => q.InvoicType == InvoicType.InvoiceSell || q.InvoicType == InvoicType.InvoiceBuyBack).Sum(t => t.Quantity)
+            }).FirstOrDefault();
+            return itemStock ?? new CheckItemStock { ItemId = itemId, Quantity = 0 };
         }
         private static Expression<Func<Entity.Domain.Invoice, bool>> PredicateBuilderFunction(InvoicePredicate invoicePredicate)
         {

@@ -39,6 +39,12 @@ namespace WareHouse.API.Controllers
         {
             return Ok(await _services.GetByIdAsync(id));
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByCategoryIdAsync(long id)
+        {
+            return Ok(await _services.GetByCategoryIdAsync(id));
+        }
+        
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {

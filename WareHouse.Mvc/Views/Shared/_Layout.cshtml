@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration;
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -476,7 +478,9 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(function () {
+        var baseUrl = '@Configuration["ApiSetting:baseUrl"]';
+        $(document).ready(function () {
+            console.log(baseUrl);
        if('@TempData["SuccessMessage"]'!='null'&&'@TempData["SuccessMessage"]'!=''){
           toastr.success('@TempData["SuccessMessage"]');
        }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +24,7 @@ namespace WareHouse.Mvc.Controllers
         public async Task<IActionResult> Create()
         {
             await GetAllCustomers();
+            await GetAllCategories();
             return View();
         }
         //POST - CREATE
@@ -32,8 +32,10 @@ namespace WareHouse.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InvoiceVm obj)
         {
-            if (ModelState.IsValid)
+            var details = ViewBag.Details as List<InvoiceDetailVm>;
+            if (ModelState.IsValid && details.Any())
             {
+                obj.InvoiceDetails = details;
                 await _restsharpContainer.SendRequest<long>("Invoice/Add", Method.POST, obj);
                 return RedirectToAction("Index");
             }
@@ -87,6 +89,16 @@ namespace WareHouse.Mvc.Controllers
         {
             var list = await _restsharpContainer.SendRequest<IEnumerable<CustomerVm>>("Customers/GetAll", Method.GET);
             ViewBag.ListOfCustomers = new SelectList(list, "Id", "CustomerName");
+        }
+        private async Task GetAllCategories()
+        {
+            var list = await _restsharpContainer.SendRequest<List<CategoryVm>>("Category/GetAll", Method.GET);
+            ViewBag.ListOfCategories = new SelectList(list, "Id", "CategoryName");
+        }
+        [HttpPost]
+        public void FillDetails(List<InvoiceDetailVm> details)
+        {
+            ViewBag.Details = details;
         }
     }
 }

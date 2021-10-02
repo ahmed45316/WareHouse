@@ -14,6 +14,7 @@ namespace WareHouse.Service.Services.Item
         Task<GetItemDto> GetByIdAsync(long id);
         Task<IEnumerable<GetItemDto>> GetAllAsync();
         Task<IEnumerable<GetItemDto>> FindAsync(ItemPredicate predicate);
+        Task<IEnumerable<GetItemDto>> GetByCategoryIdAsync(long id);
 
     }
 }
