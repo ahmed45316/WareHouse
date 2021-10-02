@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,9 @@ namespace WareHouse.Mvc.Controllers
             var invoices = await _restsharpContainer.SendRequest<IEnumerable<InvoiceVm>>("Invoice/GetAll", Method.GET);
             return View(invoices);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await GetAllCustomers();
             return View();
         }
         //POST - CREATE
@@ -40,6 +42,7 @@ namespace WareHouse.Mvc.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
+            await GetAllCustomers();
             var invoice = await GetInvoice(id);
             if (invoice == null) return NotFound();
             return View(invoice);
@@ -79,6 +82,11 @@ namespace WareHouse.Mvc.Controllers
         {
             if (id == null || id == 0) return null;
             return await _restsharpContainer.SendRequest<InvoiceVm>($"Invoice/Get/{id}", Method.GET);
+        }
+        private async Task GetAllCustomers()
+        {
+            var list = await _restsharpContainer.SendRequest<IEnumerable<CustomerVm>>("Customers/GetAll", Method.GET);
+            ViewBag.ListOfCustomers = new SelectList(list, "Id", "CustomerName");
         }
     }
 }

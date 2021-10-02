@@ -7,4 +7,10 @@
         InvoiceSellBack = 10103,
         InvoiceBuyBack = 10205
     }
+    public enum MessageType
+    {
+        Error,
+        Success
+    }
+
 }

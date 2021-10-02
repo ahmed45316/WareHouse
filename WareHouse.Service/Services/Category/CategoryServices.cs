@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LinqKit;
 using WareHouse.Common.Abstraction.UnitOfWork;
+using WareHouse.Common.Core;
 using WareHouse.Common.Dto;
+using WareHouse.Common.Enum;
 using WareHouse.Common.Parameters;
 using WareHouse.Service.Services.Base;
 
@@ -18,12 +20,14 @@ namespace WareHouse.Service.Services.Category
         }
 
 
-        public async Task<long> AddAsync(AddCategoryDto model)
+        public async Task<Result<long>> AddAsync(AddCategoryDto model)
         {
             var Category = Mapper.Map<Entity.Domain.Category>(model);
+            var isExist = await UniteOfWork.GetRepository<Entity.Domain.Category>().Any(q => q.CategoryName == model.CategoryName);
+            if (isExist) return new Result<long> { Data = 0, Message = "Category name is exist", messageType = MessageType.Error };
             var res = UniteOfWork.GetRepository<Entity.Domain.Category>().Add(Category);
             await UniteOfWork.SaveChanges();
-            return res.Id;
+            return new Result<long> { Data = res.Id, Message = "Data Saved Successfully!", messageType = MessageType.Success };
         }
 
         public async Task EditAsync(EditCategoryDto model)

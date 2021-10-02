@@ -35,8 +35,8 @@
                     <div class="col-4">
                         <label asp-for="CustomerId"></label>
                     </div>
-                    <div class="col-8">
-                        <input asp-for="CustomerId" class="form-control" />
+                    <div class="form-select ">
+                        <select asp-for="CustomerId" asp-items="@ViewBag.ListOfCustomers"></select>
                         <span asp-validation-for="CustomerId" class="text-danger"></span>
                     </div>
                 </div>

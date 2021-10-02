@@ -26,8 +26,8 @@
                     <div class="col-4">
                         <label asp-for="CategoryId"></label>
                     </div>
-                    <div class="dropdown mb-4">
-                       <select asp-for="CategoryId" asp-items="@ViewBag.ListOfCategories"></select>
+                    <div class="selectpicker ">
+                        <select asp-for="CategoryId" asp-items="@ViewBag.ListOfCategories"></select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
                 </div>

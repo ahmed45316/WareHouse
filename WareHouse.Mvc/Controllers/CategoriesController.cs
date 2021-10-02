@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WareHouse.Common.Core;
+using WareHouse.Common.Enum;
 using WareHouse.Mvc.Models;
 using WareHouse.Mvc.RestSharp;
 
@@ -32,8 +34,9 @@ namespace WareHouse.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _restsharpContainer.SendRequest<long>("Category/Add", Method.POST, obj);
-                return RedirectToAction("Index");
+                var result = await _restsharpContainer.SendRequest<Result<long>>("Category/Add", Method.POST, obj);
+                TempData[$"{(result.messageType == MessageType.Success ? "Success" : "Error")}Message"] = result.Message;
+                return result.messageType == MessageType.Success ? RedirectToAction("Index") : View(obj);
             }
             return View(obj);
 
@@ -55,6 +58,7 @@ namespace WareHouse.Mvc.Controllers
                 await _restsharpContainer.SendRequest("Category/Edit", Method.PUT, obj);
                 return RedirectToAction("Index");
             }
+            TempData["ErrorMessage"] = "Error";
             return View(obj);
 
         }

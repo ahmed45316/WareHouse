@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="~/css/toastr.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
@@ -468,13 +468,25 @@
 
     <!-- Page level plugins -->
     <script src="~/vendor/chart.js/Chart.min.js"></script>
-
+    <script src="~/js/toastr.js"></script>
     <!-- Page level custom scripts -->
     <script src="~/js/demo/chart-area-demo.js"></script>
     <script src="~/js/demo/chart-pie-demo.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+       if('@TempData["SuccessMessage"]'!='null'&&'@TempData["SuccessMessage"]'!=''){
+          toastr.success('@TempData["SuccessMessage"]');
+       }
+        if('@TempData["ErrorMessage"]'!='null'&&'@TempData["ErrorMessage"]'!=''){
+          toastr.error('@TempData["ErrorMessage"]');
+       }
+    });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>
